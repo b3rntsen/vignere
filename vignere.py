@@ -32,8 +32,6 @@ def main():
     myKey = unicode(args.key, "utf-8")
     period = args.period
 
-
-
     if (args.decrypt): 
        myMode = 'decrypt' 
     else:  # default mode is encryption
