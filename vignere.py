@@ -20,10 +20,11 @@ LETTERS = u'ABCDEFGHIJKLMNOPQRSTUVWXYZÆØÅ'
 
 def main():
     parser = argparse.ArgumentParser(description='Vignere Cipher with Danish Alphabet')
-    parser.add_argument('--encrypt', action="store_true", help='use to encrypt a text')
-    parser.add_argument('--decrypt', action="store_true", help='use to decrypt a text')
-    parser.add_argument('--text',    help='text to encrypt or decript', type=str)
-    parser.add_argument('--key',     help='key to encrypt with', type=str)
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument('-e', '--encrypt', action="store_true", help='use to encrypt a text')
+    group.add_argument('-d', '--decrypt', action="store_true", help='use to decrypt a text')
+    parser.add_argument('--text',    help='text to encrypt or decript', type=str, required=True)
+    parser.add_argument('--key',     help='key to encrypt with', type=str, required=True)
     parser.add_argument('--period',  help='take input text and split in "period" strings', type=int)
     args = parser.parse_args()
 
@@ -48,12 +49,13 @@ def main():
     print(translated.encode('utf-8'))
 
     # printing 'period' substrings and letter frequencies to assist in guessing key if length is guessed correctly    
-    substring=subStrings(translated, period)
-    print("\n Translated text in " + str(period) + " substrings for frequency analysis")
-    for i in range(0, period) :
-        s = str(substring[i].upper())
-        print(s)
-        print collections.Counter(s)
+    if period:
+        substring=subStrings(translated, period)
+        print("\n Translated text in " + str(period) + " substrings for frequency analysis")
+        for i in range(0, period) :
+            s = str(substring[i].upper())
+            print(s)
+            print collections.Counter(s)
 
  
 def subStrings(text, period):                 
